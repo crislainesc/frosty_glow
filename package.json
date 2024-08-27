@@ -1,0 +1,22 @@
+{
+  "name": "frosty-glow",
+  "displayName": "Frosty Glow",
+  "publisher": "crislainesc",
+  "description": "For those who are sensitive to light environments and dark themes, the purpose of this theme is to bring comfort with light and soft colors that are not so bright.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Frosty Glow",
+        "uiTheme": "vs",
+        "path": "./themes/Frosty Glow-color-theme.json"
+      }
+    ]
+  }
+}
