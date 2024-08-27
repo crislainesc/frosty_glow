@@ -1,0 +1,97 @@
+name: Generate README
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: List current directory
+      run: ls -la
+
+    - name: Get Repository Name
+      id: repo-name
+      run: echo "::set-output name=name::${GITHUB_REPOSITORY##*/}"
+
+    - name: Convert Repository Name
+      id: convert-name
+      run: |
+        REPO_NAME="${{ steps.repo-name.outputs.name }}"
+        FORMATTED_NAME=$(echo "$REPO_NAME" | sed -e 's/_/ /g' -e 's/\b\(.\)/\u\1/g')
+        echo "::set-output name=formatted::${FORMATTED_NAME}"
+
+    - name: Clean Existing README.md
+      run: |
+        rm -f README.md
+
+    - name: Generate README
+      run: |
+        REPO_NAME="${{ steps.repo-name.outputs.name }}"
+        FORMATTED_NAME="${{ steps.convert-name.outputs.formatted }}"
+
+        echo '' >> README.md
+        echo '<div align="center">' >> README.md
+        echo '  <h1> <img alt="code-image" width="1100px" src=".github/workflows/assets/banner.jpeg"> </h1>' >> README.md
+        echo "  <h2> ${FORMATTED_NAME} </h2>" >> README.md
+        
+        echo '  <h3>' >> README.md
+        cat .github/workflows/assets/project_description.txt >> README.md >> README.md
+        echo '</h3>' >> README.md
+        
+        echo '  <p>' >> README.md
+        echo '    <a href="https://github.com/crislainesc">' >> README.md
+        echo '      <img alt="Made by Crislaine" src="https://img.shields.io/badge/solved%20by-Crislâine%20Santos-blueviolet?style=plastic">' >> README.md
+        echo '    </a>' >> README.md
+        echo '   <br/>' >> README.md
+
+        echo '    <img alt="GitHub Top Language" src="https://img.shields.io/github/languages/top/crislainesc/'${REPO_NAME}'?color=blue&style=plastic">' >> README.md
+        echo '    <img alt="Repository size" src="https://img.shields.io/github/repo-size/crislainesc/'${REPO_NAME}'?style=plastic"/>' >> README.md
+        
+        echo '    <a href="https://opensource.org/licenses/MIT">' >> README.md
+        echo '      <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen?style=plastic">' >> README.md
+        echo '    </a>' >> README.md
+        echo '  </p>' >> README.md
+        echo '</div>' >> README.md
+        echo '' >> README.md
+
+        echo '### 📖 About the project' >> README.md
+        cat .github/workflows/assets/about.txt >> README.md
+        echo '' >> README.md
+
+        echo '### ✨ Features' >> README.md
+        cat .github/workflows/assets/features.txt >> README.md
+        echo '' >> README.md
+
+        echo '### 💻 Technologies' >> README.md
+        cat .github/workflows/assets/technologies.txt >> README.md
+        echo '' >> README.md
+
+        echo '### ▶️ Running The Project' >> README.md
+        cat .github/workflows/assets/running.txt >> README.md
+        echo '' >> README.md
+
+        echo '### 📝 License' >> README.md
+        echo '' >> README.md
+        echo 'This project is under the MIT license. See the [LICENSE](/LICENSE) file for more details.' >> README.md
+        echo '' >> README.md
+        echo '<div align="center">' >> README.md
+        echo '  <p>🚀 Made by <a href="https://github.com/crislainesc">Crislâine Santos</a> </p>' >> README.md
+        echo '</div>' >> README.md
+
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git pull origin main
+        git add README.md
+        git commit -m "Update README"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

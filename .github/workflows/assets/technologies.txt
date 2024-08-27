@@ -1,0 +1,3 @@
+- **[vsce](https://www.npmjs.com/package/vsce/v/1.99.0)**
+- **[Azure Devops](https://dev.azure.com)**
+- **[generator-code](https://www.npmjs.com/package/generator-code)**

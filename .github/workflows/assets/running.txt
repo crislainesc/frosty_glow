@@ -1,0 +1,1 @@
+- Get extension in the [marketplace](https://marketplace.visualstudio.com/items?itemName=crislainesc.frosty-glow)
